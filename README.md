@@ -1,10 +1,12 @@
-# Singe instance GZCTF deployment
+# Simplified singe node k3s GZCTF deployment
 
 - Auto k3s installation if k3s is not presented
-- Traefik, kube-config, etc managed by script
-- psql-18 alpine, no redis
-- Traefik configured to use Let's Encrypt and XFF
-- All secrets and relevant configs in .env file
+- Traefik, kube-config, etc. managed by deployment script
+- Postgres 18 alpine, no redis, local pv mounts
+- Traefik configured to use Let's Encrypt certs and XFF
+- All secrets and relevant configs in .env file (something like single source of truth)
+
+That's just works
 
 ---
 
@@ -43,3 +45,10 @@ Host files changed:
 /etc/rancher/k3s/config.yaml
 /etc/rancher/k3s/registries.yaml
 ```
+
+TODO:
+- Tests
+- Postgres mount point expansion
+- Postgres image fixation on 18.3
+- Version fixation (k3s, ps, traefik?...)
+
