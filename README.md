@@ -10,6 +10,13 @@ That's just works
 
 ---
 
+First steps:
+```
+sudo apt install git curl -y
+git clone https://github.com/r1zekami/gzctf-simple-deploy.git
+cd gzctf-simple-deploy
+```
+
 To deploy, create `.env` file in the same directory as `config/env/.env.example`:
 ```
 cp config/env/.env.example config/env/.env
@@ -25,6 +32,7 @@ Save changed configuration files, then:
 ```
 chmod +x ./deploy.sh && ./deploy.sh
 ```
+Then you need to wait while the scripts do all the work. It usually about 2-5 minutes.
 
 ---
 
