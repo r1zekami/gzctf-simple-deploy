@@ -2,6 +2,10 @@
 
 cd "$(dirname "$0")" &&
 
+if ! command -v curl &> /dev/null; then
+    echo "[deploy.sh] Error: curl is not installed. Please install curl and try again."
+    exit 1
+fi
 
 echo "[deploy.sh] Checking k3s installation..."
 
