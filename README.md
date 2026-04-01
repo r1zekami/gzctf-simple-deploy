@@ -1,4 +1,4 @@
-# Simplified singe node k3s GZCTF deployment
+# Simplified single node k3s GZCTF deployment
 
 - Auto k3s installation if k3s is not presented
 - Traefik, kube-config, etc. managed by deployment script
