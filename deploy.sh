@@ -13,6 +13,42 @@ if ! command -v k3s &> /dev/null; then
     echo "[deploy.sh] k3s not found. Installing with [node-cidr-mask-size=16]..."
     curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--kube-controller-manager-arg=node-cidr-mask-size=16" sh -
     echo "[deploy.sh] k3s installed successfully"
+    
+    echo "[deploy.sh] Waiting for k3s cluster to fully initialize (this may take 2-3 minutes)..."
+    echo "[deploy.sh] Waiting for kubectl to become available..."
+    until sudo kubectl get nodes &> /dev/null; do
+        sleep 2
+    done
+    
+    echo "[deploy.sh] Cluster is responding. Waiting for all system pods to be ready..."
+    echo ""
+    
+    wait_for_pods() {
+        while true; do
+            NOT_READY=$(sudo kubectl get pods -n kube-system --no-headers 2>/dev/null | grep -v -E "Running|Completed" | wc -l)
+            TOTAL=$(sudo kubectl get pods -n kube-system --no-headers 2>/dev/null | wc -l)
+            RUNNING=$(sudo kubectl get pods -n kube-system --no-headers 2>/dev/null | grep "Running" | wc -l)
+            COMPLETED=$(sudo kubectl get pods -n kube-system --no-headers 2>/dev/null | grep "Completed" | wc -l)
+            
+            echo -ne "\r[deploy.sh] Pods: $RUNNING Running, $COMPLETED Completed, $NOT_READY Pending (Total: $TOTAL)    "
+            
+            if [ "$TOTAL" -ge 7 ] && [ "$NOT_READY" -eq 0 ]; then
+                echo ""
+                echo "[deploy.sh] All system pods are ready!"
+                break
+            fi
+            
+            sleep 3
+        done
+    }
+    
+    wait_for_pods
+    
+    echo ""
+    echo "[deploy.sh] Current cluster state:"
+    sudo kubectl get pods -n kube-system
+    echo ""
+    
 else
     echo "[deploy.sh] k3s is already installed, proceed..."
 fi
