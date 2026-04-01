@@ -55,9 +55,18 @@ echo "[deploy.sh] Starting ./config/render-config.sh..."
 sudo chmod +x ./config/render-config.sh &&
 ./config/render-config.sh &&
 
-echo "[deploy.sh] Apply/var/lib/rancher/k3s/server/manifests/traefik-config.yaml from ./ingress/traefik-config.yaml..."
+echo "[deploy.sh] Apply /var/lib/rancher/k3s/server/manifests/traefik-config.yaml from ./ingress/traefik-config.yaml..."
 sudo cp ./ingress/traefik-config.yaml /var/lib/rancher/k3s/server/manifests/traefik-config.yaml &&
-sudo kubectl rollout restart deployment/traefik -n kube-system &&
+
+echo "[deploy.sh] Waiting for traefik deployment to exist..."
+until sudo kubectl get deployment traefik -n kube-system &> /dev/null; do
+    echo -n "."
+    sleep 2
+done
+echo ""
+
+echo "[deploy.sh] Restarting traefik..."
+sudo kubectl rollout restart deployment/traefik -n kube-system
 
 sudo mkdir -p /mnt/data/gzctf/files &&
 sudo mkdir -p /mnt/data/gzctf/db &&
