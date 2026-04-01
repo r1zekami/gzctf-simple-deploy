@@ -23,17 +23,17 @@ If you need to purge all:
 sudo kubectl delete -k .
 sudo rm -rf /mnt/data/gzctf
 ```
-You can then safely rerun `./deploy.sh`
+You can then safely re-run `deploy.sh` script
 
 ---
 
-If you accidentaly use `''` in `POSTGRES_PASSWORD` in `.env` (like `POSTGRES_PASSWORD='password'`): 
+If you accidentaly use `''` in `POSTGRES_PASSWORD` in `.env` (like `POSTGRES_PASSWORD='password'`) you can change it manually: 
 ```
 sudo kubectl exec -it -n gzctf-server deployment/gzctf-db -- psql -U postgres -c "ALTER USER postgres WITH PASSWORD 'password';"
 ```
-That will delete `''` from database password. \
+It will delete `''` from the database password. \
 Or you can just rm the mountpoint/pv's/pvc's. \
-That will not work with `ADMIN_PASSWORD` variable. It is also gonna be stored in the database, so if you do this with admin password - just change it via web service itself.
+It will not work on `ADMIN_PASSWORD` variable. It is also gonna be stored in the database, so if you do this with the admin password - just change it via web service itself.
 
 ---
 
