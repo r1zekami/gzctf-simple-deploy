@@ -10,14 +10,18 @@ That's just works
 
 ---
 
-To deploy, create `.env` file in the same directory as `config/env/.env.example`.
+To deploy, create `.env` file in the same directory as `config/env/.env.example`:
+```
+cp config/env/.env.example config/env/.env
+```
+Then change the insides of `config/env/.env`
 
-If you need to modify the `appsettings.json` variables, that is not in the `.env` file, modify the `appsettings.template.json` file.
+If you need to modify the `appsettings.json` variables, that are not in the `.env` file, modify the `appsettings.template.json` file.
 
 `appsettings.json`, `traefik-config.yaml` and `ingress.yaml` is RENDERED files that are not supposed to be changed manually. \
 You need to change corresponding `*.template.*` file for it.
 
-Fill out the `.env` file, then:
+Save changed configuration files, then:
 ```
 chmod +x ./deploy.sh && ./deploy.sh
 ```
