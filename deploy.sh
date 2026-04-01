@@ -59,15 +59,15 @@ echo "[deploy.sh] Starting ./config/render-config.sh..."
 sudo chmod +x ./config/render-config.sh &&
 ./config/render-config.sh &&
 
-echo "[deploy.sh] Apply /var/lib/rancher/k3s/server/manifests/traefik-config.yaml from ./ingress/traefik-config.yaml..."
-sudo cp ./ingress/traefik-config.yaml /var/lib/rancher/k3s/server/manifests/traefik-config.yaml &&
-
-echo "[deploy.sh] Waiting for traefik deployment to exist..."
-until sudo kubectl get deployment traefik -n kube-system &> /dev/null; do
+echo "[deploy.sh] Waiting for traefik deployment to become available, be patient..."
+until sudo kubectl get pods -n kube-system -l app.kubernetes.io/name=traefik | grep -q "Running"; do
     echo -n "."
     sleep 2
 done
-echo ""
+echo "[deploy.sh] Traefik is available now. It can be modified now."
+
+echo "[deploy.sh] Apply /var/lib/rancher/k3s/server/manifests/traefik-config.yaml from ./ingress/traefik-config.yaml..."
+sudo cp ./ingress/traefik-config.yaml /var/lib/rancher/k3s/server/manifests/traefik-config.yaml &&
 
 echo "[deploy.sh] Restarting traefik..."
 sudo kubectl rollout restart deployment/traefik -n kube-system
