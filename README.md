@@ -2,7 +2,7 @@
 
 - Auto k3s installation if k3s is not presented
 - Traefik, kube-config, etc managed by script
-- No redis, psql, gzctf-server
+- psql-18 alpine, no redis
 - Traefik configured to use Let's Encrypt and XFF
 - All secrets and relevant configs in .env file
 
