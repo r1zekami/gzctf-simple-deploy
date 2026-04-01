@@ -41,7 +41,7 @@ if [ "$RESTART_NEEDED" = true ]; then
     echo "[deploy.sh] Changes detected, restarting k3s..."
     sudo systemctl restart k3s
     echo "[deploy.sh] Waiting for k3s to be ready..."
-    until kubectl get nodes &> /dev/null; do
+    until sudo kubectl get nodes -A &> /dev/null; do
         echo -n "."
         sleep 2
     done
