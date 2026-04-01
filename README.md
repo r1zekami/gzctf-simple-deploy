@@ -45,6 +45,15 @@ You can then safely re-run `deploy.sh` script
 
 ---
 
+If you need to reapply appsettings.json/.env/etc you can change the thing you need, then:
+```
+./deploy.sh # Will render changed configs
+sudo kubectl delete pod -n gzctf-server -l app=gzctf
+```
+That will recreate the gzctf-server pod and new config will be applied.
+
+---
+
 If you accidentaly use `''` in `POSTGRES_PASSWORD` in `.env` (like `POSTGRES_PASSWORD='password'`) you can change it manually: 
 ```
 sudo kubectl exec -it -n gzctf-server deployment/gzctf-db -- psql -U postgres -c "ALTER USER postgres WITH PASSWORD 'password';"
