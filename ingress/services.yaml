@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gzctf
+  namespace: gzctf-server
+  annotations: # Enable Traefik Sticky Session
+    traefik.ingress.kubernetes.io/service.sticky.cookie: "true"
+    traefik.ingress.kubernetes.io/service.sticky.cookie.name: "LB_Session"
+    traefik.ingress.kubernetes.io/service.sticky.cookie.httponly: "true"
+spec:
+  selector:
+    app: gzctf
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+  namespace: gzctf-server
+spec:
+  selector:
+    app: gzctf-db
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432

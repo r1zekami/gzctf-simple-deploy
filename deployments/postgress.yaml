@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gzctf-db
+  namespace: gzctf-server
+  labels:
+    app: gzctf-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gzctf-db
+  template:
+    metadata:
+      labels:
+        app: gzctf-db
+    spec:
+      containers:
+        - name: gzctf-db
+          image: postgres:18-alpine
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5432
+              name: postgres
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: gzctf-secrets
+                  key: POSTGRES_PASSWORD
+          volumeMounts:
+            - name: gzctf-db
+              mountPath: /var/lib/postgresql/18/docker
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: gzctf-db
+          persistentVolumeClaim:
+            claimName: gzctf-db

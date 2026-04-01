@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gzctf
+  namespace: gzctf-server
+  labels:
+    app: gzctf
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: gzctf
+  template:
+    metadata:
+      labels:
+        app: gzctf
+    spec:
+      serviceAccountName: gzctf-sa
+      # nodeSelector: # Single instance deployment - we dont need this
+      #   kubernetes.io/hostname: xxx # Specify the deployment node, forcing it to be on the same node as the database
+      containers:
+        - name: gzctf
+          image: gztime/gzctf:latest
+          imagePullPolicy: Always
+          env:
+            - name: GZCTF_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: gzctf-secrets
+                  key: ADMIN_PASSWORD
+            - name: LC_ALL
+              value: en_US.UTF-8
+          ports:
+            - containerPort: 8080
+              name: http
+          volumeMounts:
+            - name: files
+              mountPath: /app/files
+            - name: config
+              mountPath: /app/appsettings.json
+              subPath: appsettings.json
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 384Mi
+      volumes:
+        - name: files
+          persistentVolumeClaim:
+            claimName: gzctf-files
+        - name: config
+          configMap:
+            name: gzctf-config

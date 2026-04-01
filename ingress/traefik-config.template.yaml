@@ -1,0 +1,21 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    additionalArguments:
+      - "--certificatesresolvers.default.acme.email=${ACME_EMAIL}"
+      - "--certificatesresolvers.default.acme.storage=/data/acme.json"
+      - "--certificatesresolvers.default.acme.httpchallenge.entrypoint=web"
+      - "--entryPoints.web.forwardedHeaders.insecure=true"
+      - "--entryPoints.websecure.forwardedHeaders.insecure=true"
+    ports:
+      web:
+        exposedPort: 80
+      websecure:
+        exposedPort: 443
+    service:
+      spec:
+        externalTrafficPolicy: Local
