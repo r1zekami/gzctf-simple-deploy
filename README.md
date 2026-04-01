@@ -27,13 +27,13 @@ You can then safely rerun `./deploy.sh`
 
 ---
 
-If you accidentaly use `''` in POSTGRES_PASSWORD in `.env` (like `POSTGRES_PASSWORD='password'`): 
+If you accidentaly use `''` in `POSTGRES_PASSWORD` in `.env` (like `POSTGRES_PASSWORD='password'`): 
 ```
 sudo kubectl exec -it -n gzctf-server deployment/gzctf-db -- psql -U postgres -c "ALTER USER postgres WITH PASSWORD 'password';"
 ```
 That will delete `''` from database password. \
 Or you can just rm the mountpoint/pv's/pvc's. \
-That will (potentialy) not work with `ADMIN_PASSWORD` variable. It is also gonna be stored in the database, so if you do this with admin password - just change it via web service itself.
+That will not work with `ADMIN_PASSWORD` variable. It is also gonna be stored in the database, so if you do this with admin password - just change it via web service itself.
 
 ---
 
