@@ -7,10 +7,10 @@ if ! command -v curl &> /dev/null; then
     exit 1
 fi
 
-echo "[render-config.sh] Checking if the .env is present..."
+echo "[deploy.sh] Checking if the .env is present..."
 if [ ! -f ./config/env/.env ]; then
-    echo "[render-config.sh] Error: ./config/env/.env not found!"
-    echo "[render-config.sh] Please copy ./config/env/.env.example to ./config/env/.env and configure it"
+    echo "[deploy.sh] Error: ./config/env/.env not found!"
+    echo "[deploy.sh] Please copy ./config/env/.env.example to ./config/env/.env and configure it"
     exit 1
 fi
 
