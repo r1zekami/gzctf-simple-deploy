@@ -7,6 +7,13 @@ if ! command -v curl &> /dev/null; then
     exit 1
 fi
 
+echo "[render-config.sh] Checking if the .env is present..."
+if [ ! -f ./config/env/.env ]; then
+    echo "[render-config.sh] Error: ./config/env/.env not found!"
+    echo "[render-config.sh] Please copy ./config/env/.env.example to ./config/env/.env and configure it"
+    exit 1
+fi
+
 echo "[deploy.sh] Checking k3s installation..."
 
 if ! command -v k3s &> /dev/null; then
