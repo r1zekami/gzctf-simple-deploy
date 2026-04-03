@@ -6,7 +6,7 @@
 - Traefik configured to use Let's Encrypt certs and XFF
 - All secrets and relevant configs in .env file (something like single source of truth)
 
-That's just works
+It just works
 
 ---
 
@@ -74,8 +74,6 @@ Host files changed:
 ```
 
 TODO:
-- Tests
-- Postgres mount point expansion
-- Postgres image fixation on 18.3
-- Version fixation (k3s, ps, traefik?...)
+- Tests (I mean it's working fine but there may be hidden issues)
+- Version fixation (k3s, ps, traefik?... I dont really think it is necessary)
 
