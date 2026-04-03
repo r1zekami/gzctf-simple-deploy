@@ -30,7 +30,7 @@ spec:
                   key: POSTGRES_PASSWORD
           volumeMounts:
             - name: gzctf-db
-              mountPath: /var/lib/postgresql/18/docker
+              mountPath: /var/lib/postgresql
           resources:
             requests:
               cpu: 500m
